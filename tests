@@ -1,0 +1,35 @@
+//notes for app/javascript/admin/controllers/article_controller.js
+
+import { Controller } from 'stimulus'; //where is stimulus? can't find it by cd-ing back
+
+export default class ArticleController extends Controller { //is this part of Preact or is it located somewhere in forem?
+  static targets = ['featuredNumber']; //called on class itself
+
+  increaseFeaturedNumber() { //first class method
+    // Increases the article's chances of being seen
+    const seconds = new Date().getTime() / 1000; //num of milliseconds since 1970
+    this.featuredNumberTarget.value = Math.round(seconds) + 300; //making the val of our var = our seconds plus a few mins
+  }
+
+  decreaseFeaturedNumber() {
+    // Decreases the article's chances of being seen
+    const seconds = new Date().getTime() / 1080; //why are we dividing by 1080 here?
+    this.featuredNumberTarget.value = Math.round(seconds); //not adding anything here
+  }
+//so why does adding seconds to the featuredNumber var increase the likelihood of an article being seen?
+  highlightElement() {
+    const card = this.element.querySelector('.card-body'); //grabbing a card
+    card.classList.add('bg-highlighted', 'border-highlighted'); //adding highlights class
+    setTimeout(() => {
+      card.classList.remove('bg-highlighted'); //timeout for transition I'm guessing, this way it has a hover effect maybe?
+    }, 350);
+  }
+
+  get articleId() { //how do we test get and set methods? Do we need to?
+    return parseInt(this.data.get('id'), 10); //takes the data string and turns it into base 10 numeral
+  }
+
+  set articleId(value) {
+    this.data.set('id', value); //article id is the val of this data
+  }
+} //why do we need these getter and setter methods here? Does this answer lie in how the featuredNumber works?
